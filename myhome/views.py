@@ -2,8 +2,9 @@ import datetime
 
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.shortcuts import redirect
+
 from django.http import HttpResponseRedirect
-from django.urls import reverse
 
 from myhome.forms import SearchDateForm
 
@@ -14,7 +15,8 @@ def home(request):
         if form.is_valid():
             # process the data in form.cleaned_data as required
             date = form.cleaned_data['search_date']
-            
+            date = date.strftime('%Y-%m-%d')
+            return redirect('/'+date)
 
         else:
             date = datetime.date.today()
