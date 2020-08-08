@@ -4,6 +4,7 @@ import requests
 import datetime
 import json
 import config 
+from myhome.forms import SearchDateForm
 
 def home(request):
     '''
@@ -35,7 +36,31 @@ def home(request):
         image['url'] = url
         images.append(image)
 
+
+    # FORM HANDLING 
+    if request.method == 'POST':
+        form = SearchDateForm(request.POST)
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            date = form.cleaned_data['search_date']
+            date = date.strftime('%Y-%m-%d')
+            return redirect('/'+date)
+
+        else:
+            date = datetime.date.today()
+
+    else:
+        date = datetime.date.today()
+        form = SearchDateForm(initial={'search_date': date})
+
+
     return render(request, 'myhome/home.html', {
         'date': str(yesterday),
-        'images': images
+        'images': images,
+        'form': form,
     })
+
+
+def search(request, date):
+    context = {'date': date,}
+    return render(request, 'myhome/search.html', context)

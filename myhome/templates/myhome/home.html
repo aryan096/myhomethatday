@@ -4,17 +4,44 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-
   <title>The HTML5 Herald</title>
   <meta name="description" content="The HTML5 Herald">
   <meta name="author" content="SitePoint">
-  <link rel="stylesheet" type="text/css" href="{% static 'myhome/style.css' %}">
+
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="{% static 'myhome/style.css' %}">
 </head>
 
 <body>
+  <nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand" href="#">My Home That Day</a>
+</nav>
+  <div class="container m-0 m-5 p-0">
+    <div class="row">
+      <div class="col-6">
+        {% block content %}
+        <h5>Enter a date to see what the Earth looked like that day</h5>
+        <br>
+        <form action="" method="post">
+          {% csrf_token %}
+          <table>
+          {{ form.as_p }}
+          </table>
+          <br>
+          <input type="submit" value="Submit">
+        </form>
+      {% endblock %}
+      </div>
+      <div class="col-6 mt-5 justify-content-center text-align-center">
+       <div style="text-align:center !important;">
+        {% block date %}
+        <h4>{{ date }}</h4>
+        {% endblock %}
+       </div>
+    </div>
+  </div>
 
-    <h1 class="uh">My home that day</h1>
 
+  <script src="js/scripts.js"></script>
 </body>
 </html>
