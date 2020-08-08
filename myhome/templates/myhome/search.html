@@ -1,0 +1,28 @@
+{% load static %}
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>The HTML5 Herald</title>
+  <meta name="description" content="The HTML5 Herald">
+  <meta name="author" content="SitePoint">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="{% static 'myhome/style.css' %}">
+</head>
+
+<body>
+  <nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand" href="#">My Home That Day</a>
+</nav>
+  <div class="container m-0 m-5 p-0">
+    <div class="row">
+      {% block date %}
+      <h4>{{ date }}</h4>
+      {% endblock %}
+    </div>
+  </div>
+  <script src="js/scripts.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+body {
+  background-color: black;
+  color: white;
+}
+
+p {
+  font-size: 1.25rem !important;
+}
+
+.errorlist {
+  list-style: none !important;
+  color: #9c27b0  !important;
+  padding: 0;
+  font-size: 1.25rem;
+}
