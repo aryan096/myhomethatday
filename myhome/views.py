@@ -1,25 +1,23 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import requests
 import datetime
 import json
 import config 
 from myhome.forms import SearchDateForm
 
-def home(request):
+def get_and_render_images(request, date_object):
     '''
-    The home will just cycle through the images of yesterday
+    This is the main helper function that does the bulk of the logic. It gets the API Key from the config file,
+    creates the request URL from the API using the passed in date object, gets the json, parses it, creates a 
+    list of all the images for the given date, handles the form, and renders the html for the given date
     '''
-
+    # get the api key
     api_key = config.api_key
 
-    # First we need to get yesterday's date
-    today = datetime.date.today()
-    yesterday = today - datetime.timedelta(days=1)
+    # Next, we can make a request url using the date_object parameter and API key
+    request_url = "https://api.nasa.gov/EPIC/api/natural/date/" + str(date_object) + "?api_key=" + api_key
 
-    # Next, we can make a request url using yesterday's date and API key
-    request_url = "https://api.nasa.gov/EPIC/api/natural/date/" + str(yesterday) + "?api_key=" + api_key
-    print(request_url)
     # next, we can request the API endpoint and get the images json
     response = requests.get(request_url)
     images_json = response.json()
@@ -31,8 +29,8 @@ def home(request):
         image = {}
         image['id'] = image_data['identifier']
         image['time'] = image_data['date'].split()[1]
-        url = 'https://api.nasa.gov/EPIC/archive/natural/' + str(yesterday.year) + '/' + str('{:02d}'.format(yesterday.month)) + '/' \
-            + str('{:02d}'.format(yesterday.day)) + '/png/' + image_data['image'] + '.png?api_key=' + api_key
+        url = 'https://api.nasa.gov/EPIC/archive/natural/' + str(date_object.year) + '/' + str('{:02d}'.format(date_object.month)) + '/' \
+            + str('{:02d}'.format(date_object.day)) + '/png/' + image_data['image'] + '.png?api_key=' + api_key
         image['url'] = url
         images.append(image)
 
@@ -44,23 +42,51 @@ def home(request):
             # process the data in form.cleaned_data as required
             date = form.cleaned_data['search_date']
             date = date.strftime('%Y-%m-%d')
-            return redirect('/'+date)
+            return redirect('/'+ date)
 
         else:
-            date = datetime.date.today()
+            date = date_object
 
     else:
-        date = datetime.date.today()
+        date = date_object
         form = SearchDateForm(initial={'search_date': date})
 
 
     return render(request, 'myhome/home.html', {
-        'date': str(yesterday),
+        'date': str(date_object),
         'images': images,
         'form': form,
     })
 
+def home(request):
+    '''
+    The home function calls the get_and_render_images function using yesterday's date 
+    '''
+
+    # First we need to get yesterday's date
+    today = datetime.date.today()
+    yesterday = today - datetime.timedelta(days=1)
+
+    return get_and_render_images(request, yesterday)
+
+
+def parse_date(date):
+    '''
+    This function parses a passed in date string (formatted like 2020-05-05) and returns
+    a datetime object of the same date
+    '''
+    date_split = date.split('-')
+    year = int(date_split[0])
+    month = int(date_split[1])
+    day = int(date_split[2])
+
+    datetime_object = datetime.datetime(year,month,day)
+    return datetime_object
 
 def search(request, date):
-    context = {'date': date,}
-    return render(request, 'myhome/search.html', context)
+    '''
+    This function renders the page for a user selected date through the form
+    It creates a datetime object using the parse_date function and then calls the 
+    get_and_render_images function
+    '''
+    return get_and_render_images(request, parse_date(date).date())
