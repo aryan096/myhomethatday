@@ -4,9 +4,10 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>The HTML5 Herald</title>
-  <meta name="description" content="The HTML5 Herald">
+  <title>My home that day.</title>
+  <meta name="description" content="My home that day.">
   <meta name="author" content="SitePoint">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">	
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="{% static 'myhome/style.css' %}">
@@ -18,8 +19,8 @@
 <body>
   <div class="container-fluid m-0 p-0">
     <div class="row m-0">
+     <a class="navbar-brand mobile-header" style="z-index:99;" name="top"  href="/">My home that day.</a>
       <div class="col-9 photos">
-        <a class="navbar-brand mobile-header" href="/">My Home That Day</a>
         <div id="slideshow" class="mt-0 p-0">
           {% for item in images %}
           <div class="img-div">
@@ -31,7 +32,7 @@
         <a style="font-size:32px; color:whitesmoke; position: absolute; left:50%; margin-left:-16px; bottom:25px; text-decoration: none;" href="#about" class="fa scroll-button">&#xf13a;</a>
       </div>
       <div id="about" class="col-3 p-0 p-4 sidebar">
-        <a class="navbar-brand" href="/">My Home That Day</a>
+        <a class="navbar-brand" href="/">My home that day.</a>
         <br>
         <br>
         <hr>
@@ -54,7 +55,7 @@
         {% endblock %}
         <br>
         <p>Data available from July 21st, 2015</p>
-        <p class="made-by">&#169 2020 <a href="www.niyoshiparekh.com">Niyoshi</a> & <a href="www.arysriv.com" style="color:#2e8b57;">Aryan</a></p>
+        <p class="made-by">&#169 2020 <a href="http://www.niyoshiparekh.com">Niyoshi</a> & <a href="http://www.arysriv.com" style="color:#2e8b57;">Aryan</a></p>
       </div>
     </div>
   </div>

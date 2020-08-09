@@ -30,6 +30,12 @@ body {
     width: 100%;
 }
 
+a:active, a:focus {
+  outline: 0;
+  border: none;
+  -moz-outline-style: none;
+}
+
 .col-9 {
   min-height: 100vh;
 }
@@ -88,7 +94,6 @@ hr {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-width: 100%;
 }
 
 .mobile-header {
@@ -114,17 +119,16 @@ hr {
   }
 
   #slideshow img {
-    width: 600px;
-    height: 600px;
+    width: 90vw;
+    height: 90vw;
   }
 
   .mobile-header {
     display: block;
     position: absolute;
     top: 25px;
-    left: 50%;
-    margin-left: -114.395px;
-    padding-left: 25px;
+    text-align: center;
+    width: 100vw;;
     font-family: playfair;
     font-size: 24px;
     color: whitesmoke;
@@ -137,7 +141,7 @@ hr {
     position: absolute;
     left:50%;
     margin-left:-16px;
-    bottom:25px;
+    margin-bottom:30px;
     text-decoration: none;
   }
 

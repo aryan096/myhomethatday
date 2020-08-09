@@ -48,7 +48,7 @@ def get_and_render_images(request, date_object):
             # process the data in form.cleaned_data as required
             date = form.cleaned_data['search_date']
             date = date.strftime('%Y-%m-%d')
-            return redirect('/'+ date)
+            return redirect('/'+ date + '#top')
 
         else:
             date = date_object
