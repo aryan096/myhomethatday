@@ -9,14 +9,6 @@ from PIL import Image
 from io import BytesIO
 import imageio
 
-def generate_gif(urls):
-    images = []
-    for url in urls:
-        im = imageio.imread(url)
-        images.append(im)
-
-    imageio.mimsave('haha.gif', images, duration=0.5)
-
 def get_and_render_images(request, date_object):
     '''
     This is the main helper function that does the bulk of the logic. It gets the API Key from the config file,
@@ -66,7 +58,7 @@ def get_and_render_images(request, date_object):
         form = SearchDateForm(initial={'search_date': date})
 
 
-    return render(request, 'myhome/home2.html', {
+    return render(request, 'myhome/home.html', {
         'date': str(date_object),
         'images': images,
         'form': form,
