@@ -3,13 +3,24 @@ from django.shortcuts import render, redirect
 import requests
 import datetime
 import json
-import config 
+import config
 from myhome.forms import SearchDateForm
+from PIL import Image
+from io import BytesIO
+import imageio
+
+def generate_gif(urls):
+    images = []
+    for url in urls:
+        im = imageio.imread(url)
+        images.append(im)
+
+    imageio.mimsave('haha.gif', images, duration=0.5)
 
 def get_and_render_images(request, date_object):
     '''
     This is the main helper function that does the bulk of the logic. It gets the API Key from the config file,
-    creates the request URL from the API using the passed in date object, gets the json, parses it, creates a 
+    creates the request URL from the API using the passed in date object, gets the json, parses it, creates a
     list of all the images for the given date, handles the form, and renders the html for the given date
     '''
     # get the api key
@@ -23,6 +34,7 @@ def get_and_render_images(request, date_object):
     images_json = response.json()
 
     images = []
+    urls = []
     # iterate through the list of images, we get a dict of each image with useful information
     for image_data in images_json:
         # for each image, we store its id, time, url
@@ -32,10 +44,12 @@ def get_and_render_images(request, date_object):
         url = 'https://api.nasa.gov/EPIC/archive/natural/' + str(date_object.year) + '/' + str('{:02d}'.format(date_object.month)) + '/' \
             + str('{:02d}'.format(date_object.day)) + '/png/' + image_data['image'] + '.png?api_key=' + api_key
         image['url'] = url
+        urls.append(url)
         images.append(image)
 
 
-    # FORM HANDLING 
+
+    # FORM HANDLING
     if request.method == 'POST':
         form = SearchDateForm(request.POST)
         if form.is_valid():
@@ -52,7 +66,7 @@ def get_and_render_images(request, date_object):
         form = SearchDateForm(initial={'search_date': date})
 
 
-    return render(request, 'myhome/home.html', {
+    return render(request, 'myhome/home2.html', {
         'date': str(date_object),
         'images': images,
         'form': form,
@@ -60,7 +74,7 @@ def get_and_render_images(request, date_object):
 
 def home(request):
     '''
-    The home function calls the get_and_render_images function using yesterday's date 
+    The home function calls the get_and_render_images function using yesterday's date
     '''
 
     # First we need to get yesterday's date
@@ -86,7 +100,7 @@ def parse_date(date):
 def search(request, date):
     '''
     This function renders the page for a user selected date through the form
-    It creates a datetime object using the parse_date function and then calls the 
+    It creates a datetime object using the parse_date function and then calls the
     get_and_render_images function
     '''
     return get_and_render_images(request, parse_date(date).date())

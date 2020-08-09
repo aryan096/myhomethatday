@@ -10,15 +10,24 @@
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="{% static 'myhome/style.css' %}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 
 <body>
-  <nav class="navbar navbar-light bg-light">
-    <a class="navbar-brand" href="#">My Home That Day</a>
-  </nav>
-  <div class="container m-0 m-5 p-0">
+  <div class="container m-0 p-0 p-5" style="max-width:100vw !important; max-height:100vh !important;">
     <div class="row">
-      <div class="col-6">
+      <div class="col-9 d-flex text-align-center">
+        <div id="slideshow" class="mt-0 p-0">
+          {% for item in images %}
+          <div>
+            <img src="{{ item.url }}">
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col-3 sidebar">
+        <a class="navbar-brand" href="#">My Home That Day</a>
         {% block content %}
         <h5>Enter a date to see what the Earth looked like that day</h5>
         <br>
@@ -31,8 +40,6 @@
           <input type="submit" value="Submit">
         </form>
         {% endblock %}
-      </div>
-      <div class="col-6 mt-5 justify-content-center text-align-center">
         <div style="text-align:center !important;">
           {% block date %}
           <h4>{{ date }}</h4>
@@ -40,19 +47,20 @@
         </div>
       </div>
     </div>
-    <div class = "row justify-content-center">
-      <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel" data-interval="1000" data-pause="hover" data-wrap="true">
-        <div class="carousel-inner">
-          {% for item in images %}
-          <div class="carousel-item">
-            <img class="d-block w-100" src="{{ item.url }}">
-          </div>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
   </div>
+  <script>
+  $("#slideshow > div:gt(0)").hide();
 
-  <script src="js/scripts.js"></script>
+  // setInterval(function() {
+  //   $('#slideshow > div:first')
+  //     .fadeOut(200)
+  //     .next()
+  //     .fadeIn(0)
+  //     .end()
+  //     .appendTo('#slideshow');
+  // }, 1000);
+  </script>
+
+  <!-- <script src="{% static 'myhome/scripts.js' %}"></script> -->
 </body>
 </html>
